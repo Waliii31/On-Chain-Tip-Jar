@@ -1,0 +1,10 @@
+{
+  "address": "0xFD51797C48f75aF10761F92Bdd639e4518358324",
+  "network": "BOT Chain Mainnet",
+  "chainId": 677,
+  "currencySymbol": "BOT",
+  "rpcUrl": "https://rpc.botchain.ai",
+  "blockExplorer": "https://scan.botchain.ai",
+  "owner": "0xFD51797C48f75aF10761F92Bdd639e4518358324",
+  "deployedAt": "2026-11-02T19:00:00.000Z"
+}

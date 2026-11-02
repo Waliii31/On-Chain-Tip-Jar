@@ -1,0 +1,264 @@
+@import "tailwindcss";
+
+:root {
+  --color-amber: #FFB000;
+  --color-amber-dim: #996A00;
+  --color-amber-glow: rgba(255, 176, 0, 0.4);
+  --color-amber-bg-dim: rgba(255, 176, 0, 0.05);
+
+  --color-green: #00FF41;
+  --color-green-dim: #008F11;
+  --color-green-glow: rgba(0, 255, 65, 0.4);
+  --color-green-bg-dim: rgba(0, 255, 65, 0.05);
+
+  /* Active Theme Variables (default: Amber VT220) */
+  --term-color: var(--color-amber);
+  --term-dim: var(--color-amber-dim);
+  --term-glow: var(--color-amber-glow);
+  --term-bg-dim: var(--color-amber-bg-dim);
+  --term-bg: #000000;
+}
+
+[data-theme="green"] {
+  --term-color: var(--color-green);
+  --term-dim: var(--color-green-dim);
+  --term-glow: var(--color-green-glow);
+  --term-bg-dim: var(--color-green-bg-dim);
+}
+
+[data-theme="amber"] {
+  --term-color: var(--color-amber);
+  --term-dim: var(--color-amber-dim);
+  --term-glow: var(--color-amber-glow);
+  --term-bg-dim: var(--color-amber-bg-dim);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--term-bg) !important;
+  color: var(--term-color) !important;
+  font-family: 'Fira Code', 'VT323', 'Courier New', Courier, monospace !important;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  min-height: 100vh;
+  overflow-x: hidden;
+  text-shadow: 0 0 4px var(--term-glow);
+}
+
+/* CRT Scanlines Overlay */
+.scanlines {
+  position: relative;
+}
+
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+  z-index: 9999;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+/* Phosphor Screen Flicker */
+@keyframes crt-flicker {
+  0% { opacity: 0.99; }
+  50% { opacity: 1; }
+  100% { opacity: 0.98; }
+}
+
+.crt-flicker {
+  animation: crt-flicker 0.15s infinite alternate;
+}
+
+/* Blinking CSS Block Cursor */
+@keyframes blink-cursor {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.block-cursor {
+  display: inline-block;
+  width: 0.58em;
+  height: 1.15em;
+  background-color: var(--term-color);
+  vertical-align: -0.18em;
+  margin-left: 2px;
+  animation: blink-cursor 0.9s step-start infinite;
+}
+
+.cursor-static {
+  display: inline-block;
+  width: 0.58em;
+  height: 1.15em;
+  background-color: var(--term-color);
+  vertical-align: -0.18em;
+}
+
+/* Terminal Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background: #000000;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+  border-left: 1px solid var(--term-dim);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--term-dim);
+  border: 1px solid var(--term-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--term-color);
+}
+
+/* Terminal Prompt & Inputs */
+input, textarea, select {
+  background: transparent !important;
+  color: var(--term-color) !important;
+  border: none !important;
+  outline: none !important;
+  font-family: 'Fira Code', 'Courier New', monospace !important;
+  font-size: 14px;
+  text-shadow: 0 0 3px var(--term-glow);
+  caret-color: var(--term-color);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--term-dim) !important;
+  opacity: 0.6;
+}
+
+/* Terminal Buttons */
+button {
+  background: transparent;
+  color: var(--term-color);
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  border: 1px solid var(--term-color);
+  padding: 4px 10px;
+  text-shadow: 0 0 3px var(--term-glow);
+  transition: background-color 0.15s ease, color 0.15s ease;
+  user-select: none;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--term-color);
+  color: #000000 !important;
+  text-shadow: none;
+  font-weight: 700;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  border-color: var(--term-dim);
+  color: var(--term-dim) !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Terminal Panels / Box Borders */
+.term-box {
+  background: #000000;
+  border: 1px solid var(--term-color);
+  box-shadow: 0 0 8px var(--term-glow);
+  position: relative;
+}
+
+.term-box-dim {
+  background: #000000;
+  border: 1px solid var(--term-dim);
+  position: relative;
+}
+
+.term-header-bar {
+  background-color: var(--term-color);
+  color: #000000;
+  font-weight: bold;
+  padding: 3px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  letter-spacing: 0.05em;
+}
+
+.term-header-dim {
+  border-bottom: 1px solid var(--term-dim);
+  color: var(--term-color);
+  padding: 4px 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--term-bg-dim);
+}
+
+/* Matrix Digital Rain Animation */
+.matrix-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.15;
+}
+
+/* Utility Monospace Grid */
+.mono-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.mono-table th {
+  border-bottom: 1px dashed var(--term-dim);
+  padding: 6px 8px;
+  text-align: left;
+  color: var(--term-color);
+  font-weight: 600;
+}
+
+.mono-table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mono-table tr:hover td {
+  background-color: var(--term-bg-dim);
+}
+
+/* ASCII Box characters helper */
+.ascii-border {
+  font-family: monospace;
+  white-space: pre;
+}
+
+/* Glow effects */
+.glow-text {
+  text-shadow: 0 0 6px var(--term-glow), 0 0 12px var(--term-glow);
+}
+
+.dim-text {
+  color: var(--term-dim);
+}
